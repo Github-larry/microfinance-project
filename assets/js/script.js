@@ -272,5 +272,20 @@ async function loadDues() {
 }
 
 
+async function loadClients() {
+  const clients = await getAllClients();
+  const loans = await getAllLoans();
+  const el = document.getElementById('clients-list');
+  el.innerHTML = '';
+  clients.forEach(c => {
+    const myLoans = loans.filter(l => l.clientId === c.id);
+    const total = myLoans.reduce((s,l)=> s + Number(l.principal||0), 0);
+    const item = document.createElement('div');
+    item.className = 'item';
+    item.innerHTML = `<div><strong>${c.name}</strong><div class="meta">${c.phone} • Branch ${c.branchId}</div></div><div class="right"><div class="meta">${fmtKsh(total)}</div></div>`;
+    el.appendChild(item);
+  });
+}
+
 
 
