@@ -62,3 +62,29 @@ if (userInfoEl) {
 
 
 
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+  const title = document.getElementById('page-title');
+  title.textContent = id.charAt(0).toUpperCase() + id.slice(1);
+
+
+
+
+  if (id === 'arrears') loadArrears();
+  if (id === 'disbursements') loadDisbursements(); 
+  if (id === 'dues') loadDues();
+  if (id === 'clients') loadClients();
+  if (id === 'overview') loadOverview();
+}
+
+
+
+function fmtKsh(n){ return 'Ksh ' + (Number(n) || 0).toLocaleString(); }
+
+
+
+
+
+
