@@ -156,3 +156,66 @@ async function loadOverview() {
 
 
 
+
+async function loadArrears() {
+  const loans = await getAllLoans();
+  const clients = await getAllClients();
+  const arrears = loans.filter(l => l.status === 'arrears');
+  const container = document.getElementById('arrears-list');
+  container.innerHTML = '';
+  if (arrears.length === 0){ container.innerHTML = '<p class="muted">No arrears</p>'; return; }
+
+  arrears.sort((a,b)=> daysLate(b.dueDate) - daysLate(a.dueDate));
+  arrears.forEach(l => {
+    const client = clients.find(c => c.id === l.clientId) || { name: 'Unknown' };
+    const late = daysLate(l.dueDate);
+    const assigned = l.assignedTo || 'Unassigned';
+  
+
+
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `
+      <div class="accordion">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <strong>${client.name}</strong>
+            <div class="meta">${fmtKsh(l.principal)} • Due: ${l.dueDate}</div>
+          </div>
+          <div class="right small muted">${late} days late • <span class="muted">${assigned}</span></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div>
+          <p class="small">Loan ID: ${l.id} • Branch: ${l.branchId || '—'}</p>
+          <button class="btn small-btn" data-action="assign" data-loan="${l.id}">Assign to me</button>
+          <button class="btn small-btn" data-action="contact" data-loan="${l.id}">Mark contacted</button>
+        </div>
+      </div>
+    `;
+    container.appendChild(wrap);
+  
+    
+
+    const acc = wrap.querySelector('.accordion');
+    const panel = wrap.querySelector('.panel');
+    acc.addEventListener('click', () => {
+      const open = panel.classList.toggle('open');
+      panel.style.maxHeight = open ? panel.scrollHeight + 'px' : '0px';
+    });
+
+
+    
+    
+    wrap.querySelectorAll('button').forEach(b => {
+      b.addEventListener('click', async (ev) => {
+        ev.stopPropagation();
+        const act = b.dataset.action;
+        const loanId = b.dataset.loan;
+        if (act === 'assign') await assignToMe(loanId);
+        if (act === 'contact') alert('Marked as contacted (demo)');
+      });
+    });
+  });
+}
+
+
