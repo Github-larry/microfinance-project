@@ -68,3 +68,51 @@ body {
   font-size: 12px;
 }
 
+
+.section {
+  display: none;
+}
+
+.section.active {
+  display: block;
+}
+
+.cards {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  flex: 1;
+  min-width: 200px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn.primary {
+  background: #003366;
+  color: #fff;
+}
+
+.btn.danger {
+  background: #cc0000;
+  color: #fff;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
