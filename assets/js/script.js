@@ -236,3 +236,27 @@ async function assignToMe(loanId) {
 }
 
 
+async function loadDisbursements(range='all') {
+  const loans = await getAllLoans();
+  let filtered = loans;
+  if (range !== 'all') {
+    const days = Number(range);
+    const cutoff = Date.now() - (days * 24*60*60*1000);
+    filtered = loans.filter(l => new Date(l.disbursedDate).getTime() >= cutoff);
+  }
+  const total = filtered.reduce((s,l)=> s + Number(l.principal||0), 0);
+  const stats = document.getElementById('disbursement-stats');
+  stats.innerHTML = `<h4>Disbursement total (${range==='all'?'all-time':range+' days'}): ${fmtKsh(total)}</h4>
+    <p class="muted">${filtered.length} loans</p>`;
+}
+
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-range]');
+  if (!btn) return;
+  const r = btn.dataset.range;
+  loadDisbursements(r);
+});
+
+
+
+
