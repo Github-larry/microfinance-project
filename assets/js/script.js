@@ -219,3 +219,20 @@ async function loadArrears() {
 }
 
 
+async function assignToMe(loanId) {
+  const user = JSON.parse(localStorage.getItem('mfs_user'));
+  if (!user || !user.username) return alert('No user');
+  try {
+    const r = await fetch(API + '/loans/' + loanId);
+    const loan = await r.json();
+
+
+
+    loan.assignedTo = user.username;
+    await fetch(API + '/loans/' + loanId, { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(loan) });
+    alert('Assigned to you');
+    loadArrears();
+  } catch (err) { console.error(err); alert('Error assigning'); }
+}
+
+
