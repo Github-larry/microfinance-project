@@ -27,3 +27,44 @@ body {
   font-weight: bold;
 }
 
+
+.nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-link {
+  padding: 12px 20px;
+  color: #fff;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background: #004080;
+  font-weight: bold;
+}
+
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.pill {
+  background: #003366;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
