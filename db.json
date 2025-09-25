@@ -1,0 +1,58 @@
+{
+  "users": [
+    { "id": 1, "username": "investor", "password": "1234", "role": "Investor", "name": "Investor One", "branchId": null },
+    { "id": 2, "username": "manager", "password": "1234", "role": "Operational Manager", "name": "Manager One", "branchId": 1 },
+    { "id": 3, "username": "officer1", "password": "1234", "role": "Relationship Officer", "name": "Officer Larry", "branchId": 1 }
+  ],
+  "branches": [
+    { "id": 1, "name": "Nairobi Main" },
+    { "id": 2, "name": "Mombasa Branch" }
+  ],
+  "clients": [
+    { "id": 1, "name": "Fortune ngill", "phone": "0712345678", "branchId": 1 },
+    { "id": 2, "name": "Allan Too", "phone": "0723456789", "branchId": 1 },
+    { "id": 3, "name": "Don Larry", "phone": "0701112223", "branchId": 2 }
+  ],
+  "loans": [
+    {
+      "id": 1,
+      "clientId": 1,
+      "principal": 45850,
+      "disbursedDate": "2025-09-19",
+      "dueDate": "2025-09-22",
+      "status": "arrears",
+      "assignedTo": "officer1",
+      "branchId": 1
+    },
+    {
+      "id": 2,
+      "clientId": 1,
+      "principal": 32000,
+      "disbursedDate": "2025-08-01",
+      "dueDate": "2025-08-30",
+      "status": "active",
+      "assignedTo": "officer1",
+      "branchId": 1
+    },
+    {
+      "id": 3,
+      "clientId": 2,
+      "principal": 75500,
+      "disbursedDate": "2025-09-10",
+      "dueDate": "2025-10-10",
+      "status": "disbursed",
+      "assignedTo": "officer1",
+      "branchId": 1
+    },
+    {
+      "id": 4,
+      "clientId": 3,
+      "principal": 47600,
+      "disbursedDate": "2025-06-15",
+      "dueDate": "2025-07-15",
+      "status": "arrears",
+      "assignedTo": null,
+      "branchId": 2
+    }
+  ]
+}
