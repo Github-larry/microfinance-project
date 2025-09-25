@@ -5,3 +5,25 @@ body {
   color: #333;
 }
 
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+
+.sidebar {
+  width: 220px;
+  background: #002b5c;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.brand {
+  text-align: center;
+  padding: 20px 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
