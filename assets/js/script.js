@@ -85,6 +85,74 @@ function fmtKsh(n){ return 'Ksh ' + (Number(n) || 0).toLocaleString(); }
 
 
 
+function daysLate(due) {
+  const now = new Date();
+  const dd = new Date(due);
+  const diff = Math.floor((now - dd) / (1000*60*60*24));
+  return diff;
+}
+
+async function getAllLoans(){ const r = await fetch(API + '/loans'); return r.json(); }
+async function getAllClients(){ const r = await fetch(API + '/clients'); return r.json(); }
+async function getBranches(){ const r = await fetch(API + '/branches'); return r.json(); }
+
+
+
+
+async function loadOverview() {
+  const loans = await getAllLoans();
+  const clients = await getAllClients();
+
+ 
+  const totalClients = clients.length;
+  const totalDisbursed = loans.reduce((s,l) => s + Number(l.principal||0), 0);
+  const arrearsCount = loans.filter(l => l.status === 'arrears').length;
+  const outstanding = loans.reduce((s,l) => s + Number(l.principal||0) * (l.status === 'arrears' ? 1 : 0), 0); 
+
+
+  const cards = document.getElementById('kpi-cards');
+  cards.innerHTML = `
+    <div class="card kpi"><div class="muted">Clients</div><div class="value">${totalClients}</div></div>
+    <div class="card kpi"><div class="muted">Total Disbursed</div><div class="value">${fmtKsh(totalDisbursed)}</div></div>
+    <div class="card kpi"><div class="muted">Loans in Arrears</div><div class="value">${arrearsCount}</div></div>
+    <div class="card kpi"><div class="muted">Outstanding (sample)</div><div class="value">${fmtKsh(outstanding)}</div></div>
+  `;
+
+  const statusCounts = loans.reduce((acc, l) => { acc[l.status] = (acc[l.status]||0) + 1; return acc; }, {});
+  const labels = Object.keys(statusCounts);
+  const data = Object.values(statusCounts);
+  const colors = ['#0b5ed7','#ff6b6b','#4caf50','#ffc107'];
+
+
+  const ctx = document.getElementById('loanDoughnut').getContext('2d');
+  if (window._loanChart) window._loanChart.destroy();
+  window._loanChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: { labels, datasets: [{ data, backgroundColor: colors.slice(0, labels.length) }] },
+    options: { responsive: true, maintainAspectRatio:false }
+  });
+
+
+
+  const months = {};
+  loans.forEach(l => {
+    const d = new Date(l.disbursedDate || l.date || new Date());
+    const key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+    months[key] = (months[key] || 0) + Number(l.principal || 0);
+  });
+  const sortedKeys = Object.keys(months).sort();
+  const lineCtx = document.getElementById('disburseLine').getContext('2d');
+  if (window._disbLine) window._disbLine.destroy();
+  window._disbLine = new Chart(lineCtx, {
+    type: 'line',
+    data: {
+      labels: sortedKeys,
+      datasets: [{ label: 'Ksh disbursed', data: sortedKeys.map(k => months[k]), tension:0.3, borderColor: '#0b9bd7', backgroundColor: 'rgba(11,155,215,0.08)', fill:true }]
+    },
+    options:{responsive:true,maintainAspectRatio:false}
+  });
+}
+
 
 
 
