@@ -116,3 +116,44 @@ body {
   opacity: 0.9;
 }
 
+
+.login-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-box {
+  width: 320px;
+  text-align: center;
+}
+
+.login-box input {
+  width: 100%;
+  margin: 8px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+
+.page-footer {
+  text-align: center;
+  font-size: 13px;
+  padding: 10px;
+  color: #666;
+}
+
+
+.small {
+  font-size: 12px;
+}
+
+.muted {
+  color: #666;
+}
+
+.error {
+  color: red;
+}
