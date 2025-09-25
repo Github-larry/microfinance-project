@@ -259,4 +259,18 @@ document.addEventListener('click', (e) => {
 
 
 
+async function loadDues() {
+  const loans = await getAllLoans();
+  const today = new Date().toISOString().slice(0,10);
+  const dueToday = loans.filter(l => l.dueDate === today);
+  const el = document.getElementById('dues-list');
+  el.innerHTML = '';
+  if (dueToday.length === 0) { el.innerHTML = '<p class="muted">No dues today</p>'; return; }
+  for (const l of dueToday) {
+    el.innerHTML += `<div class="item"><div><strong>Loan ${l.id}</strong> • ${fmtKsh(l.principal)}</div><div class="meta">${l.assignedTo || 'Unassigned'}</div></div>`;
+  }
+}
+
+
+
 
